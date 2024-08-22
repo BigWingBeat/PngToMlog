@@ -1,34 +1,51 @@
 # PngToMlog
-Converts a png image to mlog commands. Uses a lightweiht vectorization method i wrote to optimize the output. only works on windows unless you use a program like wine to run it on linux.
+Converts a png image to mlog commands. Uses a lightweight vectorization method written by Vortetty to optimize the output. Runs cross-platform on the command line. Requires at least .NET 8.
 
 ## Usage
-When you first open it your ocmputer will probably warn you it may not be safe to run. It is, and there should be an option to run anyway/
-The warning is because i don't have the money to become a verified publisher, however i assure you it is safe.
+```
+PngToMlog version 3, BigWingBeat fork
 
-Once you run it, a file prompt will open, this is where you choose your image, select the one you want just like any other file prompt
+Program to convert images into mlog commands
 
-Next it will prompt you with a series of questions, one at a time.
-```vanilla small screen is 80x80
-vanilla big screen is 176x176
-Screen width:
+Usage: pngtomlog <flags> <image path>
 
-Screen height:
+Available flags:
 
-Desired image width:
+        -h --help
+                Display this help message
 
-Desired image height:
+        -v --version
+                Display program version
 
-Instructions per processor, 990 recommended as it ensures you dont run out of space before this finishes:
+        -s --small
+                Output for Small Logic Display (80x80 resolution)
 
-Image optimization amount, 0 is no optimization, 100 is 100% optimization
+        -l --large
+                Output for Large Logic Display (176x176 resolution)
+
+        -i -ipp
+                Set instructions-per-processor. Defaults to 990 if unset
+
+        -m --mode
+                Set scaling mode for the image: Possible options are:
+
+                scale
+                        Scales the image on each axis to exactly fit the display resolution
+                        Will result in visible squashing / stretching for images that are
+                        significantly larger / smaller than the display on each axis
+
+                letterbox
+                        Scale the entire image uniformly until it fits within the display resolution
+                        Will result in blank bars above & below the image for landscape images,
+                        or either side of the image for portrait images.
+                        Images with an extreme aspect ratio will be very thin and likely hard to make out
+
+                crop
+                        Do not scale the image in any way.
+                        Images larger than the display will be cut off at the sides,
+                        and images smaller than the display will result in blank bars
+
+                If no mode is specified, it defaults to 'scale'
 ```
 
-Screen width and height are the dimensions (in pixels) of the display
-
-Desired image width and height are the dimensions you want the image to appear as on the screen, it will automatically scale the image to the specified size, and upon generation scale each pixel to the optimal size to fill the display as best it can
-
-Instructions per processor is how many instructions you want in each processor, this is an approximate value and will not be exact. if you dont know what im talking about just type 990. putting 990 compensates for any inaccuracies that may come in my program.
-
-Image optimization amount is how much you want the image to be optimized. optimizing will also reduce the image quality (it isnt overly noticeable but it is there) this only works if you download the command line binary of pngquant from https://pngquant.org/. To add it you have to download the **WINDOWS COMMAND LINE BINARY**, then extract the files inside to a folder called "pngquant" in same folder as my exe.
-
-after you have put in the required info, it will start generating, and then copy the first set of commands to your clipboard. paste that in a processor, then come back to the program, press enter, it will generate the next set and put it in your clipboard, you should paste this in another processor. repeat this until the program closes itself. after connecting all of the processors to a display it will show the image.
+After the program finishes running, there will be a set of files named `0.txt`, `1.txt` etc. in the directory you ran it in. Each of these files corresponds to a logic processor. To import it into mindustry, place the logic processor in-game, open the corresponding txt file in a text editor, copy the entire contents of the file, and then paste it into the game by clicking 'edit' -> 'import from clipboard' in the logic processor UI.
